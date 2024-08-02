@@ -103,19 +103,24 @@ entry_item_names = []
 entry_item_quantities = []
 
 def add_item_fields():
-    no_of_item = int(entry_no_of_item.get())
-    for widget in frame_items.winfo_children():
-        widget.destroy()
-    for i in range(no_of_item):
-        tk.Label(frame_items, text=f"Item {i+1} Name:", bg='#F0F8FF').grid(row=i, column=0)
-        item_name_entry = tk.Entry(frame_items)
-        item_name_entry.grid(row=i, column=1)
-        entry_item_names.append(item_name_entry)
-        tk.Label(frame_items, text=f"Item {i+1} Quantity:", bg='#F0F8FF').grid(row=i, column=2)
-        item_quantity_entry = tk.Entry(frame_items)
-        item_quantity_entry.grid(row=i, column=3)
-        entry_item_quantities.append(item_quantity_entry)
-    frame_items.grid()
+    try:
+        no_of_item = int(entry_no_of_item.get())
+        for widget in frame_items.winfo_children():
+            widget.destroy()
+        entry_item_names.clear()
+        entry_item_quantities.clear()
+        for i in range(no_of_item):
+            tk.Label(frame_items, text=f"Item {i+1} Name:", bg='#F0F8FF').grid(row=i, column=0)
+            item_name_entry = tk.Entry(frame_items)
+            item_name_entry.grid(row=i, column=1)
+            entry_item_names.append(item_name_entry)
+            tk.Label(frame_items, text=f"Item {i+1} Quantity:", bg='#F0F8FF').grid(row=i, column=2)
+            item_quantity_entry = tk.Entry(frame_items)
+            item_quantity_entry.grid(row=i, column=3)
+            entry_item_quantities.append(item_quantity_entry)
+        frame_items.grid()
+    except ValueError:
+        messagebox.showerror("Invalid Input", "Please enter a valid number for the number of items.")
 
 button_add_items = tk.Button(frame_billing, text="Add Item Fields", command=add_item_fields, bg='#4682B4', fg='white')
 button_add_items.grid(row=2, column=0, columnspan=2, pady=5)
@@ -141,7 +146,7 @@ frame_rate_list = tk.Frame(root, bg='#F0F8FF')
 frame_rate_list.grid(row=0, column=1, padx=20, pady=20, sticky='n')
 
 tk.Label(frame_rate_list, text="Rate List", bg='#F0F8FF', font=('Arial', 14, 'bold')).grid(row=0, column=0, columnspan=2)
-tree = ttk.Treeview(frame_rate_list, columns=('Item', 'Price'), show='headings')
+tree = ttk.Treeview(frame_rate_list, columns=('Item', 'Price'), show='headings', height=10)
 tree.heading('Item', text='Item')
 tree.heading('Price', text='Price')
 for item, price in Rate_List.items():
